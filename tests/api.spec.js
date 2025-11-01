@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { getHealth } from './apiCalls.js';
+import { getHealth } from '../helpers/apiCalls.js';
 
 test('health check API', async ({ request }) => {
   const response = await getHealth(request);
 
-  await expect(response.status()).toBe(200);
+  expect(response.status()).toBe(200);
 });

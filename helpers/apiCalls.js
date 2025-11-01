@@ -1,4 +1,5 @@
-import { API_ENDPOINT } from '../config/apiEndpoints.js';
+import { API_ENDPOINT }
+ from '../testData.js';
 
 export async function getHealth(request) {
     const response = await request.get(`${process.env.API_URL}${API_ENDPOINT.getHealth}`);
