@@ -16,6 +16,8 @@
         "@types/node": "^24.9.1"
     },
     "dependencies": {
+        "dotenv": "^17.2.3",
+        "env": "^0.0.2",
         "playwright": "^1.56.1"
     }
 }
