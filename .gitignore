@@ -8,3 +8,6 @@ node_modules/
 /playwright/.auth/
 .env
 
+
+# dynamic test data
+dynamicTestData
