@@ -38,6 +38,7 @@ test("Login user through API", async ({ request }) => {
 test("Get user by ID ", async ({ request }) => {
   const response = await createUser(request, userEmail, userPassword);
   const body = await response.json();
+  
   expect(response.status()).toBe(201);
   userId = body.user.id;
   authToken = body.token;
