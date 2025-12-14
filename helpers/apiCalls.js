@@ -122,7 +122,7 @@ export async function deleteUser(request, userId, authToken) {
             'Authorization': `Bearer ${authToken}`
         }
     });
-    if (response.status() !== 204) {
+    if (response.status() !== 200) {
         throw new Error(`Delete user failed with status: ${response.status()}`);
     }
     console.log('User deleted successfully');
