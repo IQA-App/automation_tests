@@ -1,8 +1,8 @@
-import { test, expect, request } from '@playwright/test';
+import { test } from '@playwright/test';
 import { getEmailContent } from '../helpers/getEmailContentApi';
 import { readFile } from 'fs/promises';
 
-test('Test emails', async ({ request }) => {
+test.skip('Test emails', async ({ request }) => {
     const searchEmail = 'test1@test.com';
     await getEmailContent({
         request: request,

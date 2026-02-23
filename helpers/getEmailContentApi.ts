@@ -1,7 +1,13 @@
 import { writeFile } from 'fs/promises';
-import { expect } from 'playwright/test';
 
-export async function getEmailContent({ request, retries, getEmail, timeout }) {
+type GetEmailContentOptions = {
+    request: any;
+    retries: number;
+    getEmail: string;
+    timeout: number;
+};
+
+export async function getEmailContent({ request, retries, getEmail, timeout }: GetEmailContentOptions) {
     const token = process.env.API_KEY;
     const url = process.env.EMAILS_URL;
     let attempts = 0;
@@ -15,10 +21,10 @@ export async function getEmailContent({ request, retries, getEmail, timeout }) {
                     Authorization: 'Token ' + token,
                 },
             })
-            .then(async (res) => {
+            .then(async (res: any) => {
                 const responseStatus = await res.status();
                 const body = await res.json();
-                const emailsArray = body.results.filter((email) =>
+                const emailsArray = body.results.filter((email: any) =>
                     email.preview_text.includes(getEmail)
                 );
 
@@ -31,7 +37,7 @@ export async function getEmailContent({ request, retries, getEmail, timeout }) {
                         .slice(0, 6);
                     console.log('=== CODE ===', confirmationCode);
 
-                    writeFile(
+                    await writeFile(
                         'dynamicTestData/testData.json',
                         JSON.stringify({
                             confirmCode: confirmationCode,
@@ -39,7 +45,7 @@ export async function getEmailContent({ request, retries, getEmail, timeout }) {
                     );
                 }
                 if (responseStatus !== 200 && attempts < retries) {
-                    await page.waitForTimeout(timeout);
+                    await new Promise((resolve) => setTimeout(resolve, timeout));
                     return await response();
                 } else if (
                     attempts == retries &&
