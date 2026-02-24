@@ -129,7 +129,7 @@ export class RequestSubmissionPage {
   }
 
   /**
-   * Intercepts and aborts the request (no real network call).
+   * Intercepts the outgoing request and fulfills it with a 201 success stub.
    * Returns { getRequest } — call getRequest() after submit to inspect the request.
    */
   async interceptRequest() {
@@ -142,7 +142,12 @@ export class RequestSubmissionPage {
     const handler = (route: any) => {
       capturedRequest = route.request();
       resolveRequest(capturedRequest);
-      route.abort();
+      // Fulfill with success so the app never shows an error dialog
+      route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ success: true }),
+      });
     };
 
     await this.routeOrders(handler);
@@ -153,7 +158,7 @@ export class RequestSubmissionPage {
   }
 
   /**
-   * Intercepts, aborts, and captures only the parsed JSON payload.
+   * Intercepts the outgoing request, captures the JSON payload, and fulfills with a 201 stub.
    * Returns { getPayload } — call getPayload() after submit to read the payload.
    */
   async interceptAndCapturePayload() {
@@ -166,7 +171,12 @@ export class RequestSubmissionPage {
     const handler = (route: any) => {
       capturedPayload = route.request().postDataJSON();
       resolvePayload(capturedPayload);
-      route.abort();
+      // Fulfill with success so the app never shows an error dialog
+      route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify({ success: true }),
+      });
     };
 
     await this.routeOrders(handler);

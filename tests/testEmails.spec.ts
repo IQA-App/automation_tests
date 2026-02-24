@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { faker } from '../helpers/faker';
 import { getEmailContent } from '../helpers/getEmailContentApi';
 import { readFile, mkdir } from 'fs/promises';
+import { CREDS } from '../testData';
 
 const BASE_URL = process.env.API_URL;
 
@@ -10,7 +11,7 @@ test('full forgot-password flow: send code → read email → reset password', a
 
     // 1. Create a fresh user
     const email = faker.internet.email();
-    const password = 'Test123Qq!';
+    const password = CREDS.user.password;
     const newPassword = 'NewPass456Qq!';
 
     const createRes = await request.post(`${BASE_URL}/user`, {
