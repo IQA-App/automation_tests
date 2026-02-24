@@ -10,52 +10,55 @@ type GetEmailContentOptions = {
 export async function getEmailContent({ request, retries, getEmail, timeout }: GetEmailContentOptions) {
     const token = process.env.API_KEY;
     const url = process.env.EMAILS_URL;
+
+    if (!url) throw new Error('EMAILS_URL is not set in .env');
+    if (!token) throw new Error('API_KEY is not set in .env');
+
     let attempts = 0;
 
-    const response = async () => {
+    const response = async (): Promise<void> => {
         attempts++;
 
-        await request
-            .get(url, {
-                headers: {
-                    Authorization: 'Token ' + token,
-                },
-            })
-            .then(async (res: any) => {
-                const responseStatus = await res.status();
-                const body = await res.json();
-                const emailsArray = body.results.filter((email: any) =>
-                    email.preview_text.includes(getEmail)
-                );
+        const res = await request.get(url, {
+            headers: { Authorization: 'Token ' + token },
+        });
 
-                if (responseStatus === 200 && emailsArray.length > 0) {
-                    console.log('=== ALL EMAILS ===', emailsArray);
-                    const stringCode = emailsArray[0].preview_text;
+        const responseStatus = res.status();
+        const body = await res.json();
 
-                    const confirmationCode = stringCode
-                        .split('your code is :')[1]
-                        .slice(0, 6);
-                    console.log('=== CODE ===', confirmationCode);
+        if (responseStatus !== 200) {
+            if (attempts < retries) {
+                await new Promise((resolve) => setTimeout(resolve, timeout));
+                return response();
+            }
+            throw new Error(`Email service returned ${responseStatus}`);
+        }
 
-                    await writeFile(
-                        'dynamicTestData/testData.json',
-                        JSON.stringify({
-                            confirmCode: confirmationCode,
-                        })
-                    );
-                }
-                if (responseStatus !== 200 && attempts < retries) {
-                    await new Promise((resolve) => setTimeout(resolve, timeout));
-                    return await response();
-                } else if (
-                    attempts == retries &&
-                    responseStatus != 200 &&
-                    emailsArray.length === 0
-                ) {
-                    throw new Error('Email service error');
-                }
-            });
+        const emailsArray = body.results.filter((email: any) =>
+            email.preview_text.includes(getEmail)
+        );
+
+        if (emailsArray.length > 0) {
+            console.log('=== ALL EMAILS ===', emailsArray);
+            const stringCode = emailsArray[0].preview_text;
+            const confirmationCode = stringCode.split('your code is :')[1].slice(0, 6);
+            console.log('=== CODE ===', confirmationCode);
+
+            await writeFile(
+                'dynamicTestData/testData.json',
+                JSON.stringify({ confirmCode: confirmationCode })
+            );
+            return;
+        }
+
+        // Email not found yet — retry if attempts remain
+        if (attempts < retries) {
+            await new Promise((resolve) => setTimeout(resolve, timeout));
+            return response();
+        }
+
+        throw new Error(`Email for "${getEmail}" not found after ${retries} attempts`);
     };
 
-    return await response();
+    return response();
 }

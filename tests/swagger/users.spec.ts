@@ -8,6 +8,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 const newEmail = () => faker.internet.email();
 
 async function createUser(request: any, email: string, password: string) {
+    console.log(`Creating user with email: ${email}`);
   return request.post(`${BASE_URL}/user`, { data: { email, password } });
 }
 

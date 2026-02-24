@@ -8,6 +8,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 const newEmail = () => faker.internet.email();
 
 async function createUser(request: any, email: string, password: string) {
+    console.log(`Creating user with email: ${email}`);
   return request.post(`${BASE_URL}/user`, { data: { email, password } });
 }
 
@@ -105,6 +106,8 @@ test.describe("POST /auth/forgot-password — send reset code", () => {
     const res = await request.post(`${BASE_URL}/auth/forgot-password`, {
       data: { email },
     });
+    console.log("Forgot password response status:", res.status());
+    console.log("Forgot password response body:", await res.json());
     // 201 = code sent; 400 = a code is already pending (business rule)
     expect([201, 400]).toContain(res.status());
   });
