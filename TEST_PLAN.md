@@ -630,7 +630,7 @@ Generates:
 ## 8.2 Environment Configuration
 
 ### API Configuration
-- **API_URL**: Base API URL (default: `https://dev0pz.com/api`)
+- **API_URL**: Base API URL
 - **SESSION_ENDPOINT_MODE**: Session endpoint variant
 - **LOGOUT_ENDPOINT_MODE**: Logout endpoint variant
 - **EXPECTED_LOGOUT_STATUS_WITH_TOKEN**: Expected status code (default: 200)

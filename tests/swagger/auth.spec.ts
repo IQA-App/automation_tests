@@ -2,13 +2,16 @@ import { test, expect } from "@playwright/test";
 import { faker } from "../../helpers/faker";
 import { CREDS } from "../../testData";
 
-const BASE_URL = process.env.API_URL || "https://dev0pz.com/api";
+const BASE_URL = process.env.API_URL;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 const newEmail = () => faker.internet.email();
 
 async function createUser(request: any, email: string, password: string) {
+<<<<<<< HEAD
     console.log(`Creating user with email: ${email}`);
+=======
+>>>>>>> f6bdc2fa5c0cfebbab4d7ee79ff292081359d01c
   return request.post(`${BASE_URL}/user`, { data: { email, password } });
 }
 
@@ -106,8 +109,11 @@ test.describe("POST /auth/forgot-password — send reset code", () => {
     const res = await request.post(`${BASE_URL}/auth/forgot-password`, {
       data: { email },
     });
+<<<<<<< HEAD
     console.log("Forgot password response status:", res.status());
     console.log("Forgot password response body:", await res.json());
+=======
+>>>>>>> f6bdc2fa5c0cfebbab4d7ee79ff292081359d01c
     // 201 = code sent; 400 = a code is already pending (business rule)
     expect([201, 400]).toContain(res.status());
   });

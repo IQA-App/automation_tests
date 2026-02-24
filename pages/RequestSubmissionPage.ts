@@ -1,4 +1,4 @@
-const BASE_URL = "https://dev0pz.com";
+const BASE_URL = process.env.BASE_URL;
 
 export class RequestSubmissionPage {
   page: any;

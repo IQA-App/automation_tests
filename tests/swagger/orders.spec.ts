@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { faker } from "../../helpers/faker";
 
-const BASE_URL = process.env.API_URL || "https://dev0pz.com/api";
+const BASE_URL = process.env.API_URL;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 const newEmail = () => faker.internet.email();
