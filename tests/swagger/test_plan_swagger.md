@@ -1,7 +1,7 @@
 # Swagger API Test Plan
 
 **Project:** Backapp API  
-**Base URL:** `https://dev0pz.com/api`  
+**Base URL:**  
 **Tag:** `@swagger`  
 **Test Files:**
 - `tests/swagger/auth.spec.ts`
@@ -298,16 +298,4 @@ These tests are marked `test.fixme()` — they are **skipped during normal test 
 | PATCH | `/orders/{id}/status` | orders |
 | PATCH | `/orders/{id}/assign` | orders |
 
----
 
-## 6. Environment Setup
-
-```env
-API_URL=https://dev0pz.com/api
-BASE_URL=https://dev0pz.com
-ADMIN_EMAIL=admin@test.com
-ADMIN_PASSWORD=12345Qq!
-```
-
-Admin credentials are read from `.env` via `process.env.ADMIN_EMAIL` / `process.env.ADMIN_PASSWORD`.  
-Regular user password is read from `testData.ts` → `CREDS.user.password` (`123456Qq!`).

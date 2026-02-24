@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from '../testData';
 
-const BASE_URL = process.env.API_URL || 'https://dev0pz.com/api';
+const BASE_URL = process.env.API_URL;
 
 export async function getHealth(request: any) {
     const response = await request.get(`${BASE_URL}${API_ENDPOINT.getHealth}`);

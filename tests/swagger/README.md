@@ -1,6 +1,6 @@
 # Swagger API Tests
 
-Tests based on the real OpenAPI spec fetched from https://dev0pz.com/api/docs-json.  
+Tests based on the real OpenAPI spec fetched /docs-json.  
 All 20 endpoints across 4 groups are covered.
 
 ---
